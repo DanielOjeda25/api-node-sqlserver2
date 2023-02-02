@@ -82,6 +82,32 @@ export const getTotalProductCount = async (req, res) => {
     const result = await pool.request().query(queries.getTotalProduct)
     res.json(result.recordset[0][''])
   } catch (error) {
+    res.status(500).send('Error message: ', error.message)
+  }
+}
+
+//actualizar un producto por su ID
+export const updateProductById = async (req, res) => {
+  const { Name, Description, Quantity } = req.body
+
+  if (Name == null || Description == null || Quantity == null) {
+    res.status(400).json({
+      message: 'Faltan datos',
+    })
+  }
+  try {
+    //creamos la conexión
+    const pool = await getConnection()
+    await pool
+      .request()
+      .input('Name', sql.VarChar, Name)
+      .input('Description', sql.Text, Description)
+      .input('Quantity', sql.Int, Quantity)
+      .input('id', req.params.id)
+      .query(queries.updateproductById)
+
+    res.json({ Name, Description, Quantity })
+  } catch (error) {
     res.status(500).send(error.message)
   }
 }
