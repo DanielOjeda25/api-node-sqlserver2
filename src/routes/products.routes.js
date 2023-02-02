@@ -5,6 +5,7 @@ import {
   getProductById,
   deleteProductById,
   getTotalProductCount,
+  updateProductById,
 } from '../controllers/products.controllers'
 
 const router = Router()
@@ -20,6 +21,6 @@ router.post('/products', createNewProduct)
 
 router.delete('/products/:id', deleteProductById)
 
-router.put('/products')
+router.put('/products/:id', updateProductById)
 
 export default router
